@@ -5,14 +5,16 @@
 // 3. dinamiskai sugeneruoti tiek el kiek yra genru
 
 const ListGroup = (props) => {
-  const { items, textProperty, valueProperty } = props;
+  const { items, textProperty, valueProperty, currentGenre } = props;
   return (
     <ul className="list-group">
       {items.map((genre) => (
         <li
           key={genre[valueProperty]}
           onClick={() => props.onGenreChange(genre)}
-          className="list-group-item"
+          className={
+            'list-group-item ' + (currentGenre === genre ? 'active' : '')
+          }
         >
           {genre[textProperty]}
         </li>

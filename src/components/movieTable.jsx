@@ -11,6 +11,7 @@ class MovieTable extends Component {
     genres: [],
     pageSize: 4,
     currentPage: 1,
+
     testArr: [
       { id: 1, title: 'blue' },
       { id: 2, title: 'red' },
@@ -36,11 +37,17 @@ class MovieTable extends Component {
 
   handleGenreChange = (genre) => {
     console.log(genre);
-    this.setState({ selectedGenre: genre });
+    this.setState({ currentGenre: genre });
   };
 
   render() {
-    const { movies: mv, currentPage, pageSize, genres } = this.state;
+    const {
+      movies: mv,
+      currentPage,
+      currentGenre,
+      pageSize,
+      genres,
+    } = this.state;
     if (mv.length === 0)
       return (
         <div className="alert alert-warning">
@@ -57,7 +64,11 @@ class MovieTable extends Component {
         <h3 className="my-2">Please see out movies</h3>
         <div className="row">
           <div className="col-3">
-            <ListGroup onGenreChange={this.handleGenreChange} items={genres} />
+            <ListGroup
+              currentGenre={currentGenre}
+              onGenreChange={this.handleGenreChange}
+              items={genres}
+            />
           </div>
           <div className="col">
             <p>Showing {mv.length} movies in out store</p>
@@ -89,12 +100,12 @@ class MovieTable extends Component {
             />
           </div>
         </div>
-        <ListGroup
+        {/* <ListGroup
           textProperty="title"
           valueProperty="id"
           onGenreChange={this.handleGenreChange}
           items={this.state.testArr}
-        />
+        /> */}
       </div>
     );
   }
