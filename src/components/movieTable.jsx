@@ -4,12 +4,18 @@ import { getGenres } from '../services/fakeGenreService';
 import MovieRow from './movieRow';
 import Pagination from './common/paginate';
 import { paginate } from './../utils/paginate';
+import ListGroup from './common/listGroup';
 class MovieTable extends Component {
   state = {
     movies: [],
     genres: [],
     pageSize: 4,
     currentPage: 1,
+    testArr: [
+      { id: 1, title: 'blue' },
+      { id: 2, title: 'red' },
+      { id: 3, title: 'green' },
+    ],
   };
   componentDidMount() {
     this.setState({ movies: getMovies(), genres: getGenres() });
@@ -28,8 +34,13 @@ class MovieTable extends Component {
     this.setState({ currentPage: pageNum });
   };
 
+  handleGenreChange = (genre) => {
+    console.log(genre);
+    this.setState({ selectedGenre: genre });
+  };
+
   render() {
-    const { movies: mv, currentPage, pageSize } = this.state;
+    const { movies: mv, currentPage, pageSize, genres } = this.state;
     if (mv.length === 0)
       return (
         <div className="alert alert-warning">
@@ -45,7 +56,9 @@ class MovieTable extends Component {
       <div className="movie">
         <h3 className="my-2">Please see out movies</h3>
         <div className="row">
-          <div className="col-3">Genres</div>
+          <div className="col-3">
+            <ListGroup onGenreChange={this.handleGenreChange} items={genres} />
+          </div>
           <div className="col">
             <p>Showing {mv.length} movies in out store</p>
             <table className="table table-striped ">
@@ -76,6 +89,12 @@ class MovieTable extends Component {
             />
           </div>
         </div>
+        <ListGroup
+          textProperty="title"
+          valueProperty="id"
+          onGenreChange={this.handleGenreChange}
+          items={this.state.testArr}
+        />
       </div>
     );
   }
