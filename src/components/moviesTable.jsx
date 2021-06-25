@@ -13,27 +13,35 @@ class MoviesTable extends Component {
     this.props.onSort(sortColumnCopy);
   };
 
+  renderSortIcon = (iconColumn) => {
+    const { sortBy, order } = this.props.sortColumn;
+    if (iconColumn === sortBy && order === 'asc')
+      return <i className="fa fa-sort-asc"></i>;
+
+    if (iconColumn === sortBy && order === 'desc')
+      return <i className="fa fa-sort-desc"></i>;
+
+    return;
+  };
+
   render() {
-    const { moviesPaginated, onDelete, sortColumn } = this.props;
-    const iconSort =
-      sortColumn.order === 'asc' ? (
-        <i className="fa fa-sort-desc"></i>
-      ) : (
-        <i className="fa fa-sort-asc"></i>
-      );
+    const { moviesPaginated, onDelete } = this.props;
+
     return (
       <table className="table table-striped ">
         <thead>
           <tr>
-            <th onClick={() => this.raiseSort('title')}>Title {iconSort} </th>
+            <th onClick={() => this.raiseSort('title')}>
+              Title {this.renderSortIcon('title')}{' '}
+            </th>
             <th onClick={() => this.raiseSort('genre.name')}>
-              Genre {iconSort}
+              Genre {this.renderSortIcon('genre.name')}
             </th>
             <th onClick={() => this.raiseSort('numberInStock')}>
-              Stock {iconSort}
+              Stock {this.renderSortIcon('numberInStock')}
             </th>
             <th onClick={() => this.raiseSort('dailyRentalRate')}>
-              Rating {iconSort}
+              Rating {this.renderSortIcon('dailyRentalRate')}
             </th>
             <th></th>
           </tr>
