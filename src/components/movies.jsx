@@ -1,22 +1,19 @@
 import React, { Component } from 'react';
 import { getMovies } from '../services/fakeMovieService';
 import { getGenres } from '../services/fakeGenreService';
-import MovieRow from './movieRow';
+
 import Pagination from './common/paginate';
-import { paginate } from './../utils/paginate';
+import { paginate } from '../utils/paginate';
 import ListGroup from './common/listGroup';
-class MovieTable extends Component {
+import MoviesTable from './moviesTable';
+import { movieSort } from '../utils/sort';
+class Movies extends Component {
   state = {
     movies: [],
     genres: [],
     pageSize: 4,
     currentPage: 1,
-
-    testArr: [
-      { id: 1, title: 'blue' },
-      { id: 2, title: 'red' },
-      { id: 3, title: 'green' },
-    ],
+    sortColumn: { sortBy: 'title', order: 'asc' },
   };
   componentDidMount() {
     // add extra item to genres
@@ -25,7 +22,6 @@ class MovieTable extends Component {
   }
 
   handleDelete = (movieId) => {
-    console.log('You are trying to delete, WHy ?', movieId);
     const moviesWithoutTheOneWeDeleted = this.state.movies.filter(
       (m) => m._id !== movieId
     );
@@ -38,8 +34,11 @@ class MovieTable extends Component {
   };
 
   handleGenreChange = (genre) => {
-    console.log(genre);
     this.setState({ currentGenre: genre, currentPage: 1 });
+  };
+
+  handleSort = (sortColumnCopy) => {
+    this.setState({ sortColumn: sortColumnCopy });
   };
 
   render() {
@@ -49,6 +48,7 @@ class MovieTable extends Component {
       currentGenre,
       pageSize,
       genres,
+      sortColumn,
     } = this.state;
     if (mv.length === 0)
       return (
@@ -62,9 +62,13 @@ class MovieTable extends Component {
         ? mv.filter((m) => m.genre._id === currentGenre._id)
         : mv;
 
+    // sort filteredMovies by sortColumn.sortBy
+    // genre.name fix
+    const sortedMovies = movieSort(sortColumn, filteredMovies);
+    // movieSort(sortColumn, filteredMovies);
     // paduoti tik tiek movies kiek reikia pagal pagination
 
-    const moviesPaginated = paginate(filteredMovies, currentPage, pageSize);
+    const moviesPaginated = paginate(sortedMovies, currentPage, pageSize);
 
     return (
       <div className="movie">
@@ -79,26 +83,12 @@ class MovieTable extends Component {
           </div>
           <div className="col">
             <p>Showing {moviesPaginated.length} movies in out store</p>
-            <table className="table table-striped ">
-              <thead>
-                <tr>
-                  <th>Title</th>
-                  <th>Genre</th>
-                  <th>Stock</th>
-                  <th>Rating</th>
-                  <th></th>
-                </tr>
-              </thead>
-              <tbody>
-                {moviesPaginated.map((movie) => (
-                  <MovieRow
-                    onDelete={this.handleDelete}
-                    movie={movie}
-                    key={movie._id}
-                  />
-                ))}
-              </tbody>
-            </table>
+            <MoviesTable
+              sortColumn={sortColumn}
+              onSort={this.handleSort}
+              onDelete={this.handleDelete}
+              moviesPaginated={moviesPaginated}
+            />
             <Pagination
               currentPage={currentPage}
               onPageChange={this.handlePageChange}
@@ -118,4 +108,4 @@ class MovieTable extends Component {
   }
 }
 
-export default MovieTable;
+export default Movies;

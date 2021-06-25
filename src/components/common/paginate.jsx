@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types';
 // stateles functional component
 const Pagination = (props) => {
-  const { itemCount, pageSize, onPageChange, currentPage } = props;
+  const { itemCount, pageSize, currentPage } = props;
 
   // ic 9 ps 4
   // [1,2,3]
@@ -26,6 +26,7 @@ const Pagination = (props) => {
             key={i}
             className={'page-item' + (currentPage === i && ' active')}
           >
+            {/*  eslint-disable-next-line jsx-a11y/anchor-is-valid */}
             <a onClick={() => props.onPageChange(i)} className="page-link">
               {i}
             </a>
