@@ -19,7 +19,9 @@ class MovieTable extends Component {
     ],
   };
   componentDidMount() {
-    this.setState({ movies: getMovies(), genres: getGenres() });
+    // add extra item to genres
+    const genres = [{ _id: '', name: 'All genres' }, ...getGenres()];
+    this.setState({ movies: getMovies(), genres: genres });
   }
 
   handleDelete = (movieId) => {
@@ -37,7 +39,7 @@ class MovieTable extends Component {
 
   handleGenreChange = (genre) => {
     console.log(genre);
-    this.setState({ currentGenre: genre });
+    this.setState({ currentGenre: genre, currentPage: 1 });
   };
 
   render() {
@@ -55,9 +57,14 @@ class MovieTable extends Component {
         </div>
       );
 
+    const filteredMovies =
+      currentGenre && currentGenre._id
+        ? mv.filter((m) => m.genre._id === currentGenre._id)
+        : mv;
+
     // paduoti tik tiek movies kiek reikia pagal pagination
 
-    const moviesPaginated = paginate(mv, currentPage, pageSize);
+    const moviesPaginated = paginate(filteredMovies, currentPage, pageSize);
 
     return (
       <div className="movie">
@@ -71,7 +78,7 @@ class MovieTable extends Component {
             />
           </div>
           <div className="col">
-            <p>Showing {mv.length} movies in out store</p>
+            <p>Showing {moviesPaginated.length} movies in out store</p>
             <table className="table table-striped ">
               <thead>
                 <tr>
@@ -95,7 +102,7 @@ class MovieTable extends Component {
             <Pagination
               currentPage={currentPage}
               onPageChange={this.handlePageChange}
-              itemCount={mv.length}
+              itemCount={filteredMovies.length}
               pageSize={pageSize}
             />
           </div>
