@@ -1,10 +1,11 @@
 import React, { Component } from 'react';
 import { getMovies } from '../services/fakeMovieService';
 import { getGenres } from '../services/fakeGenreService';
-import MovieRow from './movieRow';
+
 import Pagination from './common/paginate';
 import { paginate } from '../utils/paginate';
 import ListGroup from './common/listGroup';
+import MoviesTable from './moviesTable';
 class Movies extends Component {
   state = {
     movies: [],
@@ -71,26 +72,10 @@ class Movies extends Component {
           </div>
           <div className="col">
             <p>Showing {moviesPaginated.length} movies in out store</p>
-            <table className="table table-striped ">
-              <thead>
-                <tr>
-                  <th>Title</th>
-                  <th>Genre</th>
-                  <th>Stock</th>
-                  <th>Rating</th>
-                  <th></th>
-                </tr>
-              </thead>
-              <tbody>
-                {moviesPaginated.map((movie) => (
-                  <MovieRow
-                    onDelete={this.handleDelete}
-                    movie={movie}
-                    key={movie._id}
-                  />
-                ))}
-              </tbody>
-            </table>
+            <MoviesTable
+              onDelete={this.handleDelete}
+              moviesPaginated={moviesPaginated}
+            />
             <Pagination
               currentPage={currentPage}
               onPageChange={this.handlePageChange}
