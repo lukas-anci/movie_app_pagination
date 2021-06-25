@@ -67,6 +67,9 @@ class Movies extends Component {
     filteredMovies.sort((a, b) =>
       a[sortColumn.sortBy] > b[sortColumn.sortBy] ? 1 : -1
     );
+    if (sortColumn.sortBy === 'genre.name') {
+      filteredMovies.sort((a, b) => (a.genre.name > b.genre.name ? 1 : -1));
+    }
 
     // paduoti tik tiek movies kiek reikia pagal pagination
 
