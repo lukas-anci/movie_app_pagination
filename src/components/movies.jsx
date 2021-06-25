@@ -12,6 +12,7 @@ class Movies extends Component {
     genres: [],
     pageSize: 4,
     currentPage: 1,
+    sortColumn: { sortBy: 'title', order: 'asc' },
   };
   componentDidMount() {
     // add extra item to genres
@@ -35,6 +36,11 @@ class Movies extends Component {
     this.setState({ currentGenre: genre, currentPage: 1 });
   };
 
+  handleSort = (sortBy) => {
+    console.log('sortBy', sortBy);
+    this.setState({ sortColumn: { sortBy: sortBy, order: 'asc' } });
+  };
+
   render() {
     const {
       movies: mv,
@@ -42,6 +48,7 @@ class Movies extends Component {
       currentGenre,
       pageSize,
       genres,
+      sortColumn,
     } = this.state;
     if (mv.length === 0)
       return (
@@ -54,6 +61,12 @@ class Movies extends Component {
       currentGenre && currentGenre._id
         ? mv.filter((m) => m.genre._id === currentGenre._id)
         : mv;
+
+    // sort filteredMovies by sortColumn.sortBy
+    // genre.name fix
+    filteredMovies.sort((a, b) =>
+      a[sortColumn.sortBy] > b[sortColumn.sortBy] ? 1 : -1
+    );
 
     // paduoti tik tiek movies kiek reikia pagal pagination
 
@@ -73,6 +86,7 @@ class Movies extends Component {
           <div className="col">
             <p>Showing {moviesPaginated.length} movies in out store</p>
             <MoviesTable
+              onSort={this.handleSort}
               onDelete={this.handleDelete}
               moviesPaginated={moviesPaginated}
             />

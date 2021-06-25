@@ -3,15 +3,15 @@ import MovieRow from './movieRow';
 
 class MoviesTable extends Component {
   render() {
-    const { moviesPaginated, onDelete } = this.props;
+    const { moviesPaginated, onDelete, onSort } = this.props;
     return (
       <table className="table table-striped ">
         <thead>
           <tr>
-            <th>Title</th>
-            <th>Genre</th>
-            <th>Stock</th>
-            <th>Rating</th>
+            <th onClick={() => onSort('title')}>Title</th>
+            <th onClick={() => onSort('genre.name')}>Genre</th>
+            <th onClick={() => onSort('numberInStock')}>Stock</th>
+            <th onClick={() => onSort('dailyRentalRate')}>Rating</th>
             <th></th>
           </tr>
         </thead>
