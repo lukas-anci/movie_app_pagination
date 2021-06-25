@@ -3,20 +3,14 @@ import { getMovies } from '../services/fakeMovieService';
 import { getGenres } from '../services/fakeGenreService';
 import MovieRow from './movieRow';
 import Pagination from './common/paginate';
-import { paginate } from './../utils/paginate';
+import { paginate } from '../utils/paginate';
 import ListGroup from './common/listGroup';
-class MovieTable extends Component {
+class Movies extends Component {
   state = {
     movies: [],
     genres: [],
     pageSize: 4,
     currentPage: 1,
-
-    testArr: [
-      { id: 1, title: 'blue' },
-      { id: 2, title: 'red' },
-      { id: 3, title: 'green' },
-    ],
   };
   componentDidMount() {
     // add extra item to genres
@@ -25,7 +19,6 @@ class MovieTable extends Component {
   }
 
   handleDelete = (movieId) => {
-    console.log('You are trying to delete, WHy ?', movieId);
     const moviesWithoutTheOneWeDeleted = this.state.movies.filter(
       (m) => m._id !== movieId
     );
@@ -38,7 +31,6 @@ class MovieTable extends Component {
   };
 
   handleGenreChange = (genre) => {
-    console.log(genre);
     this.setState({ currentGenre: genre, currentPage: 1 });
   };
 
@@ -118,4 +110,4 @@ class MovieTable extends Component {
   }
 }
 
-export default MovieTable;
+export default Movies;
