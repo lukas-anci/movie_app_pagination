@@ -36,9 +36,8 @@ class Movies extends Component {
     this.setState({ currentGenre: genre, currentPage: 1 });
   };
 
-  handleSort = (sortBy) => {
-    console.log('sortBy', sortBy);
-    this.setState({ sortColumn: { sortBy: sortBy, order: 'asc' } });
+  handleSort = (sortColumnCopy) => {
+    this.setState({ sortColumn: sortColumnCopy });
   };
 
   render() {
@@ -64,13 +63,24 @@ class Movies extends Component {
 
     // sort filteredMovies by sortColumn.sortBy
     // genre.name fix
+
+    const posNeg = {
+      pos: 1,
+      neg: -1,
+    };
+
+    if (sortColumn.order === 'desc') {
+      posNeg.neg = 1;
+      posNeg.pos = -1;
+    }
     filteredMovies.sort((a, b) =>
-      a[sortColumn.sortBy] > b[sortColumn.sortBy] ? 1 : -1
+      a[sortColumn.sortBy] < b[sortColumn.sortBy] ? posNeg.pos : posNeg.neg
     );
     if (sortColumn.sortBy === 'genre.name') {
-      filteredMovies.sort((a, b) => (a.genre.name > b.genre.name ? 1 : -1));
+      filteredMovies.sort((a, b) =>
+        a.genre.name < b.genre.name ? posNeg.pos : posNeg.neg
+      );
     }
-
     // paduoti tik tiek movies kiek reikia pagal pagination
 
     const moviesPaginated = paginate(filteredMovies, currentPage, pageSize);
@@ -89,6 +99,7 @@ class Movies extends Component {
           <div className="col">
             <p>Showing {moviesPaginated.length} movies in out store</p>
             <MoviesTable
+              sortColumn={sortColumn}
               onSort={this.handleSort}
               onDelete={this.handleDelete}
               moviesPaginated={moviesPaginated}
