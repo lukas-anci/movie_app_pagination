@@ -14,15 +14,27 @@ class MoviesTable extends Component {
   };
 
   render() {
-    const { moviesPaginated, onDelete } = this.props;
+    const { moviesPaginated, onDelete, sortColumn } = this.props;
+    const iconSort =
+      sortColumn.order === 'asc' ? (
+        <i className="fa fa-sort-desc"></i>
+      ) : (
+        <i className="fa fa-sort-asc"></i>
+      );
     return (
       <table className="table table-striped ">
         <thead>
           <tr>
-            <th onClick={() => this.raiseSort('title')}>Title</th>
-            <th onClick={() => this.raiseSort('genre.name')}>Genre</th>
-            <th onClick={() => this.raiseSort('numberInStock')}>Stock</th>
-            <th onClick={() => this.raiseSort('dailyRentalRate')}>Rating</th>
+            <th onClick={() => this.raiseSort('title')}>Title {iconSort} </th>
+            <th onClick={() => this.raiseSort('genre.name')}>
+              Genre {iconSort}
+            </th>
+            <th onClick={() => this.raiseSort('numberInStock')}>
+              Stock {iconSort}
+            </th>
+            <th onClick={() => this.raiseSort('dailyRentalRate')}>
+              Rating {iconSort}
+            </th>
             <th></th>
           </tr>
         </thead>
