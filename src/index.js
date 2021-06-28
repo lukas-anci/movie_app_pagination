@@ -1,14 +1,16 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
-import App from './App';
+// import App from './App';
 import reportWebVitals from './reportWebVitals';
 import 'bootstrap/dist/css/bootstrap.css';
 import 'font-awesome/css/font-awesome.css';
 
+import BootTest from './components/bootstrapTest';
+
 ReactDOM.render(
   <React.StrictMode>
-    <App />
+    <BootTest />
   </React.StrictMode>,
   document.getElementById('root')
 );
